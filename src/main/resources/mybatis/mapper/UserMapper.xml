@@ -1,0 +1,398 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.edu.whu.model.dao.UserMapper">
+	<select id="selectUidByUserNameAndPassword" resultType="int">
+        select userId from bbs_user where userName=#{username} and userPassword=#{userpassword}
+    </select>
+  <resultMap id="BaseResultMap" type="cn.edu.whu.model.pojo.User">
+    <id column="userId" jdbcType="INTEGER" property="userid" />
+    <result column="userName" jdbcType="VARCHAR" property="username" />
+    <result column="userPassword" jdbcType="VARCHAR" property="userpassword" />
+    <result column="userEmail" jdbcType="VARCHAR" property="useremail" />
+    <result column="userSex" jdbcType="VARCHAR" property="usersex" />
+    <result column="userPost" jdbcType="VARCHAR" property="userpost" />
+    <result column="userTopic" jdbcType="VARCHAR" property="usertopic" />
+    <result column="userFace" jdbcType="VARCHAR" property="userface" />
+    <result column="JoinDate" jdbcType="TIMESTAMP" property="joindate" />
+    <result column="lastLogin" jdbcType="TIMESTAMP" property="lastlogin" />
+    <result column="userLogins" jdbcType="INTEGER" property="userlogins" />
+    <result column="userBirthday" jdbcType="VARCHAR" property="userbirthday" />
+    <result column="userQuestion" jdbcType="VARCHAR" property="userquestion" />
+    <result column="userAnswer" jdbcType="VARCHAR" property="useranswer" />
+    <result column="userPhoto" jdbcType="VARCHAR" property="userphoto" />
+    <result column="userSetting" jdbcType="VARCHAR" property="usersetting" />
+    <result column="userInfo" jdbcType="VARCHAR" property="userinfo" />
+  </resultMap>
+  <sql id="Example_Where_Clause">
+    <where>
+      <foreach collection="oredCriteria" item="criteria" separator="or">
+        <if test="criteria.valid">
+          <trim prefix="(" prefixOverrides="and" suffix=")">
+            <foreach collection="criteria.criteria" item="criterion">
+              <choose>
+                <when test="criterion.noValue">
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue">
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue">
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue">
+                  and ${criterion.condition}
+                  <foreach close=")" collection="criterion.value" item="listItem" open="(" separator=",">
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Update_By_Example_Where_Clause">
+    <where>
+      <foreach collection="example.oredCriteria" item="criteria" separator="or">
+        <if test="criteria.valid">
+          <trim prefix="(" prefixOverrides="and" suffix=")">
+            <foreach collection="criteria.criteria" item="criterion">
+              <choose>
+                <when test="criterion.noValue">
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue">
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue">
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue">
+                  and ${criterion.condition}
+                  <foreach close=")" collection="criterion.value" item="listItem" open="(" separator=",">
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List">
+    userId, userName, userPassword, userEmail, userSex, userPost, userTopic, userFace, 
+    JoinDate, lastLogin, userLogins, userBirthday, userQuestion, userAnswer, userPhoto, 
+    userSetting, userInfo
+  </sql>
+  <select id="selectByExample" parameterType="cn.edu.whu.model.pojo.UserExample" resultMap="BaseResultMap">
+    select
+    <if test="distinct">
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    from bbs_user
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null">
+      order by ${orderByClause}
+    </if>
+  </select>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from bbs_user
+    where userId = #{userid,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+    delete from bbs_user
+    where userId = #{userid,jdbcType=INTEGER}
+  </delete>
+  <delete id="deleteByExample" parameterType="cn.edu.whu.model.pojo.UserExample">
+    delete from bbs_user
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+  </delete>
+  <insert id="insert" parameterType="cn.edu.whu.model.pojo.User">
+    insert into bbs_user (userId, userName, userPassword, 
+      userEmail, userSex, userPost, 
+      userTopic, userFace, JoinDate, 
+      lastLogin, userLogins, userBirthday, 
+      userQuestion, userAnswer, userPhoto, 
+      userSetting, userInfo)
+    values (#{userid,jdbcType=INTEGER}, #{username,jdbcType=VARCHAR}, #{userpassword,jdbcType=VARCHAR}, 
+      #{useremail,jdbcType=VARCHAR}, #{usersex,jdbcType=VARCHAR}, #{userpost,jdbcType=VARCHAR}, 
+      #{usertopic,jdbcType=VARCHAR}, #{userface,jdbcType=VARCHAR}, #{joindate,jdbcType=TIMESTAMP}, 
+      #{lastlogin,jdbcType=TIMESTAMP}, #{userlogins,jdbcType=INTEGER}, #{userbirthday,jdbcType=VARCHAR}, 
+      #{userquestion,jdbcType=VARCHAR}, #{useranswer,jdbcType=VARCHAR}, #{userphoto,jdbcType=VARCHAR}, 
+      #{usersetting,jdbcType=VARCHAR}, #{userinfo,jdbcType=VARCHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="cn.edu.whu.model.pojo.User">
+    insert into bbs_user
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="userid != null">
+        userId,
+      </if>
+      <if test="username != null">
+        userName,
+      </if>
+      <if test="userpassword != null">
+        userPassword,
+      </if>
+      <if test="useremail != null">
+        userEmail,
+      </if>
+      <if test="usersex != null">
+        userSex,
+      </if>
+      <if test="userpost != null">
+        userPost,
+      </if>
+      <if test="usertopic != null">
+        userTopic,
+      </if>
+      <if test="userface != null">
+        userFace,
+      </if>
+      <if test="joindate != null">
+        JoinDate,
+      </if>
+      <if test="lastlogin != null">
+        lastLogin,
+      </if>
+      <if test="userlogins != null">
+        userLogins,
+      </if>
+      <if test="userbirthday != null">
+        userBirthday,
+      </if>
+      <if test="userquestion != null">
+        userQuestion,
+      </if>
+      <if test="useranswer != null">
+        userAnswer,
+      </if>
+      <if test="userphoto != null">
+        userPhoto,
+      </if>
+      <if test="usersetting != null">
+        userSetting,
+      </if>
+      <if test="userinfo != null">
+        userInfo,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="userid != null">
+        #{userid,jdbcType=INTEGER},
+      </if>
+      <if test="username != null">
+        #{username,jdbcType=VARCHAR},
+      </if>
+      <if test="userpassword != null">
+        #{userpassword,jdbcType=VARCHAR},
+      </if>
+      <if test="useremail != null">
+        #{useremail,jdbcType=VARCHAR},
+      </if>
+      <if test="usersex != null">
+        #{usersex,jdbcType=VARCHAR},
+      </if>
+      <if test="userpost != null">
+        #{userpost,jdbcType=VARCHAR},
+      </if>
+      <if test="usertopic != null">
+        #{usertopic,jdbcType=VARCHAR},
+      </if>
+      <if test="userface != null">
+        #{userface,jdbcType=VARCHAR},
+      </if>
+      <if test="joindate != null">
+        #{joindate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="lastlogin != null">
+        #{lastlogin,jdbcType=TIMESTAMP},
+      </if>
+      <if test="userlogins != null">
+        #{userlogins,jdbcType=INTEGER},
+      </if>
+      <if test="userbirthday != null">
+        #{userbirthday,jdbcType=VARCHAR},
+      </if>
+      <if test="userquestion != null">
+        #{userquestion,jdbcType=VARCHAR},
+      </if>
+      <if test="useranswer != null">
+        #{useranswer,jdbcType=VARCHAR},
+      </if>
+      <if test="userphoto != null">
+        #{userphoto,jdbcType=VARCHAR},
+      </if>
+      <if test="usersetting != null">
+        #{usersetting,jdbcType=VARCHAR},
+      </if>
+      <if test="userinfo != null">
+        #{userinfo,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByExampleSelective" parameterType="map">
+    update bbs_user
+    <set>
+      <if test="record.userid != null">
+        userId = #{record.userid,jdbcType=INTEGER},
+      </if>
+      <if test="record.username != null">
+        userName = #{record.username,jdbcType=VARCHAR},
+      </if>
+      <if test="record.userpassword != null">
+        userPassword = #{record.userpassword,jdbcType=VARCHAR},
+      </if>
+      <if test="record.useremail != null">
+        userEmail = #{record.useremail,jdbcType=VARCHAR},
+      </if>
+      <if test="record.usersex != null">
+        userSex = #{record.usersex,jdbcType=VARCHAR},
+      </if>
+      <if test="record.userpost != null">
+        userPost = #{record.userpost,jdbcType=VARCHAR},
+      </if>
+      <if test="record.usertopic != null">
+        userTopic = #{record.usertopic,jdbcType=VARCHAR},
+      </if>
+      <if test="record.userface != null">
+        userFace = #{record.userface,jdbcType=VARCHAR},
+      </if>
+      <if test="record.joindate != null">
+        JoinDate = #{record.joindate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.lastlogin != null">
+        lastLogin = #{record.lastlogin,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.userlogins != null">
+        userLogins = #{record.userlogins,jdbcType=INTEGER},
+      </if>
+      <if test="record.userbirthday != null">
+        userBirthday = #{record.userbirthday,jdbcType=VARCHAR},
+      </if>
+      <if test="record.userquestion != null">
+        userQuestion = #{record.userquestion,jdbcType=VARCHAR},
+      </if>
+      <if test="record.useranswer != null">
+        userAnswer = #{record.useranswer,jdbcType=VARCHAR},
+      </if>
+      <if test="record.userphoto != null">
+        userPhoto = #{record.userphoto,jdbcType=VARCHAR},
+      </if>
+      <if test="record.usersetting != null">
+        userSetting = #{record.usersetting,jdbcType=VARCHAR},
+      </if>
+      <if test="record.userinfo != null">
+        userInfo = #{record.userinfo,jdbcType=VARCHAR},
+      </if>
+    </set>
+    <if test="_parameter != null">
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExample" parameterType="map">
+    update bbs_user
+    set userId = #{record.userid,jdbcType=INTEGER},
+      userName = #{record.username,jdbcType=VARCHAR},
+      userPassword = #{record.userpassword,jdbcType=VARCHAR},
+      userEmail = #{record.useremail,jdbcType=VARCHAR},
+      userSex = #{record.usersex,jdbcType=VARCHAR},
+      userPost = #{record.userpost,jdbcType=VARCHAR},
+      userTopic = #{record.usertopic,jdbcType=VARCHAR},
+      userFace = #{record.userface,jdbcType=VARCHAR},
+      JoinDate = #{record.joindate,jdbcType=TIMESTAMP},
+      lastLogin = #{record.lastlogin,jdbcType=TIMESTAMP},
+      userLogins = #{record.userlogins,jdbcType=INTEGER},
+      userBirthday = #{record.userbirthday,jdbcType=VARCHAR},
+      userQuestion = #{record.userquestion,jdbcType=VARCHAR},
+      userAnswer = #{record.useranswer,jdbcType=VARCHAR},
+      userPhoto = #{record.userphoto,jdbcType=VARCHAR},
+      userSetting = #{record.usersetting,jdbcType=VARCHAR},
+      userInfo = #{record.userinfo,jdbcType=VARCHAR}
+    <if test="_parameter != null">
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByPrimaryKeySelective" parameterType="cn.edu.whu.model.pojo.User">
+    update bbs_user
+    <set>
+      <if test="username != null">
+        userName = #{username,jdbcType=VARCHAR},
+      </if>
+      <if test="userpassword != null">
+        userPassword = #{userpassword,jdbcType=VARCHAR},
+      </if>
+      <if test="useremail != null">
+        userEmail = #{useremail,jdbcType=VARCHAR},
+      </if>
+      <if test="usersex != null">
+        userSex = #{usersex,jdbcType=VARCHAR},
+      </if>
+      <if test="userpost != null">
+        userPost = #{userpost,jdbcType=VARCHAR},
+      </if>
+      <if test="usertopic != null">
+        userTopic = #{usertopic,jdbcType=VARCHAR},
+      </if>
+      <if test="userface != null">
+        userFace = #{userface,jdbcType=VARCHAR},
+      </if>
+      <if test="joindate != null">
+        JoinDate = #{joindate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="lastlogin != null">
+        lastLogin = #{lastlogin,jdbcType=TIMESTAMP},
+      </if>
+      <if test="userlogins != null">
+        userLogins = #{userlogins,jdbcType=INTEGER},
+      </if>
+      <if test="userbirthday != null">
+        userBirthday = #{userbirthday,jdbcType=VARCHAR},
+      </if>
+      <if test="userquestion != null">
+        userQuestion = #{userquestion,jdbcType=VARCHAR},
+      </if>
+      <if test="useranswer != null">
+        userAnswer = #{useranswer,jdbcType=VARCHAR},
+      </if>
+      <if test="userphoto != null">
+        userPhoto = #{userphoto,jdbcType=VARCHAR},
+      </if>
+      <if test="usersetting != null">
+        userSetting = #{usersetting,jdbcType=VARCHAR},
+      </if>
+      <if test="userinfo != null">
+        userInfo = #{userinfo,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where userId = #{userid,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="cn.edu.whu.model.pojo.User">
+    update bbs_user
+    set userName = #{username,jdbcType=VARCHAR},
+      userPassword = #{userpassword,jdbcType=VARCHAR},
+      userEmail = #{useremail,jdbcType=VARCHAR},
+      userSex = #{usersex,jdbcType=VARCHAR},
+      userPost = #{userpost,jdbcType=VARCHAR},
+      userTopic = #{usertopic,jdbcType=VARCHAR},
+      userFace = #{userface,jdbcType=VARCHAR},
+      JoinDate = #{joindate,jdbcType=TIMESTAMP},
+      lastLogin = #{lastlogin,jdbcType=TIMESTAMP},
+      userLogins = #{userlogins,jdbcType=INTEGER},
+      userBirthday = #{userbirthday,jdbcType=VARCHAR},
+      userQuestion = #{userquestion,jdbcType=VARCHAR},
+      userAnswer = #{useranswer,jdbcType=VARCHAR},
+      userPhoto = #{userphoto,jdbcType=VARCHAR},
+      userSetting = #{usersetting,jdbcType=VARCHAR},
+      userInfo = #{userinfo,jdbcType=VARCHAR}
+    where userId = #{userid,jdbcType=INTEGER}
+  </update>
+</mapper>
